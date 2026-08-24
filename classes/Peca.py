@@ -127,7 +127,7 @@ class Rei(Peca):
             (-1, -1), (-1, 1), (1, -1), (1, 1),
         ]
 
-    def movimentos_validos(self, tabuleiro):
+    def movimentos_validos(self, tabuleiro) -> list[tuple[int,int]]:
 
         movimentos_impossiveis = []
         for delta_linha, delta_coluna in self.__direcoes:
@@ -144,7 +144,7 @@ class Rei(Peca):
             if peca_alvo.cor == self.cor:
                 break
 
-            if (delta_linha, delta_coluna) in [(-1, 0), (1, 0), (0, -1), (0, 1)] # se tiver aqui e é uma torre ou rainha == tmnc
+            if (delta_linha, delta_coluna) in [(-1, 0), (1, 0), (0, -1), (0, 1)] :
                 if isinstance(peca_alvo, (Torre, Rainha)):
                     movimentos_impossiveis.append((linha, coluna))
             else:
