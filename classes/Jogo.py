@@ -1,6 +1,6 @@
-from Tabuleiro import Tabuleiro
-from Pecas import *
-from Jogador import Jogador
+from classes.Tabuleiro import Tabuleiro
+from classes.Pecas import *
+from classes.Jogador import Jogador
 
 class Jogo:
     def __init__(self, jogador_branca : str = "brancas", jogador_preta : str = "pretas" ):
