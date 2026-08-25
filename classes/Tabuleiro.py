@@ -41,8 +41,13 @@ class Tabuleiro:
 
         movimentos = peca.movimentos_validos(self)
         if (linhaF, colunaF) in movimentos:
+            peca_capturar = None
+            if not self.get_peca(linhaF, colunaF) is None:
+                peca_capturar = self.get_peca(linhaF, colunaF)
+
             self.remover_peca(linha0, coluna0)
             self.colocar_peca(peca, linhaF, colunaF)
+            return peca_capturar
         else:
             return False
 
