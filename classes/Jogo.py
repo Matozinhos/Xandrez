@@ -24,7 +24,7 @@ class Jogo:
         if peca is None or peca.cor != self.turno_atual:
             return False
 
-        peca_capturar = peca.mover_para(linha_destino, coluna_destino)
+        peca_capturar = self.tabuleiro.mover_peca(linha_origem, coluna_origem, linha_destino, coluna_destino)
 
         if peca_capturar == False:
             return False

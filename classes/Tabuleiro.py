@@ -17,9 +17,11 @@ class Tabuleiro:
         return self.matrizTabuleiro[linha][coluna]
 
     def remover_peca(self, linha:int, coluna:int) :
+        print("Removeu peca")
         self.matrizTabuleiro[linha][coluna].peca = None
 
     def colocar_peca(self, peca : Peca, linha:int, coluna:int):
+        print("Colocou Peca")
         peca.posicao_def(linha, coluna)
         self.matrizTabuleiro[linha][coluna].peca = peca
 
@@ -28,15 +30,17 @@ class Tabuleiro:
         for linha in range(self.TAMANHO):
             for coluna in range(self.TAMANHO):
                 casa = self.matrizTabuleiro[linha][coluna]
-                if not casa.is_vazia():
+                if not casa.is_vazia() or not isinstance(self.get_peca(linha, coluna), Rei):
                     peca = casa.peca
                     casas_atacadas.append(peca.movimentos_validos(self))
         return casas_atacadas
 
     def mover_peca(self, linha0, coluna0, linhaF, colunaF) -> bool:
         peca = self.get_peca(linha0, coluna0)
-
+        print("Mover Peca")
+        
         if peca is None:
+            print(self)
             raise ValueError("Não há peca na casa de origem")
 
         movimentos = peca.movimentos_validos(self)
@@ -77,5 +81,4 @@ class Tabuleiro:
                     simbolo = simbolos[type(casa.peca).__name__]
                     texto.append(simbolo.upper() if casa.peca.cor == "branco" else simbolo.lower())
             linhas_texto.append(" ".join(texto))
-        linhas_texto.reverse()
         return "\n".join(linhas_texto)

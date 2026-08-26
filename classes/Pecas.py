@@ -134,26 +134,23 @@ class Rei(Peca):
         for delta_linha, delta_coluna in self.__direcoes:
             linha, coluna = self._linha, self._coluna
             
-        while tabuleiro.dentro_dos_limite(linha, coluna):
-            linha += delta_linha
-            coluna += delta_coluna
+            while tabuleiro.dentro_dos_limite(linha,coluna):
+                peca_alvo = tabuleiro.get_peca(linha, coluna)
+                
+                if peca_alvo is None:
+                    break
+                if peca_alvo.cor == self.cor:
+                    break
 
-            peca_alvo = tabuleiro.get_peca(linha, coluna)
-            
-            if peca_alvo is None:
-                break
-            if peca_alvo.cor == self.cor:
-                break
-
-            if (delta_linha, delta_coluna) in [(-1, 0), (1, 0), (0, -1), (0, 1)] :
-                if isinstance(peca_alvo, (Torre, Rainha)):
-                    movimentos_impossiveis.append((linha, coluna))
-            else:
-                if isinstance(peca_alvo, (Bispo, Rainha)):
-                    movimentos_impossiveis.append((linha,coluna))
+                if (delta_linha, delta_coluna) in [(-1, 0), (1, 0), (0, -1), (0, 1)] :
+                    if isinstance(peca_alvo, (Torre, Rainha)):
+                        movimentos_impossiveis.append((linha, coluna))
+                else:
+                    if isinstance(peca_alvo, (Bispo, Rainha)):
+                        movimentos_impossiveis.append((linha,coluna))
 
         movimentos = []
-        casas_atacadas = tabuleiro.get_casas_atacadas() 
+        casas_atacadas = tabuleiro.get_casas_atacadas(linha,coluna) 
         for delta_linha, delta_coluna in self.__direcoes:
             atacada = False 
             linha, coluna = self._linha + delta_linha, self._coluna + delta_coluna

@@ -20,6 +20,8 @@ for cor, peca in lista_pecas_para_imagens:
     SIMBOLOS[(cor,peca)] = imagem
 
 
+imagem_vazia = Image.open(os.path.join(diretorio_atual,"imgs", "pngg.png"))
+
 COR_CASA_CLARA = "#EEEED2"
 COR_CASA_ESCURA = "#769656"
 COR_SELECIONADA = "#F6F669"
@@ -46,7 +48,7 @@ class JanelaXadrez(ctk.CTk):
         peca = self.jogo.tabuleiro.get_peca(linha, coluna)
         self.casa_selecionada = (linha,coluna)
         self.movimentos_destacados = peca.movimentos_validos(self.jogo.tabuleiro)
-        print("casa selecionada")
+        
 
     def limpar_selecao(self):
         self.casa_selecionada = None
@@ -79,10 +81,10 @@ class JanelaXadrez(ctk.CTk):
 
     def clicar_casa(self, linha, coluna):
         if self.casa_selecionada is not None:
-            origem = self.casa_selecionada
+            linha_origem, coluna_origem = self.casa_selecionada
 
             if (linha,coluna) in self.movimentos_destacados:
-                self.jogo.mover_peca(*origem, linha, coluna)
+                self.jogo.mover_peca(linha_origem, coluna_origem, linha, coluna)
                 self.limpar_selecao()
                 self.atualizar_tabuleiro()
                 return
@@ -105,15 +107,21 @@ class JanelaXadrez(ctk.CTk):
         peca = self.jogo.tabuleiro.get_peca(linha,coluna)
 
         if peca:
-            imagem = SIMBOLOS[(peca.cor, type(peca).__name__)] if peca else None
+            imagem = SIMBOLOS[(peca.cor, type(peca).__name__)]
             imagem_peca = ctk.CTkImage(
                 light_image=imagem,
                 dark_image=imagem,
-                size=(50,50)
+                size=(68,68)
             )
             botao.configure(image=imagem_peca)
-
-
+        else:
+            imagem_peca = ctk.CTkImage(
+                light_image=imagem_vazia,
+                dark_image=imagem_vazia,
+                size=(68,68)
+            )
+            botao.configure(image=imagem_peca)
+            
         cor_base = COR_CASA_CLARA if (linha + coluna) % 2 == 0 else COR_CASA_ESCURA
 
         if (linha,coluna) == self.casa_selecionada:
@@ -130,8 +138,9 @@ class JanelaXadrez(ctk.CTk):
             for coluna in range(8):
                 self.atualizar_casa(linha, coluna)
 
+        print("atualizou o tabuleiro")
         nome_jogador = self.jogo.jogador_da_vez().nome
         self.label_turnos.configure(
-            text = f"Vez de: {nome_jogador} ({self.jogo.turno_atual})"
+            text = f"Vez de: {nome_jogador} ({self.jogo.turno_atual}) Casa Selecionada = {self.casa_selecionada}"
         )
 
