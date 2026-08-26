@@ -55,7 +55,7 @@ class Peao(Peca):
         linha_inicial = 6 if self.cor == "branco" else 1
 
         frente = (self._linha + direcao, self._coluna)
-        if tabuleiro.dentro_do_limite(*frente) and tabuleiro.get_peca(*frente) is None:
+        if tabuleiro.dentro_dos_limite(*frente) and tabuleiro.get_peca(*frente) is None:
             movimentos.append(frente)
 
             if self._linha == linha_inicial:
@@ -65,7 +65,7 @@ class Peao(Peca):
 
         for delta_coluna in (-1,1):
             diagonal = (self._linha + direcao, self._coluna + delta_coluna)
-            if tabuleiro.dentro_do_limite(*diagonal):
+            if tabuleiro.dentro_dos_limite(*diagonal):
                 peca_alvo = tabuleiro.get_peca(*diagonal)
                 if peca_alvo is not None and peca_alvo.cor != self.cor:
                     movimentos.append(diagonal)

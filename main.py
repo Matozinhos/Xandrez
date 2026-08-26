@@ -5,6 +5,7 @@ t = Tabuleiro()
 t.montar_posicao_inicial()
 
 j = JanelaXadrez()
-j.mainloop()
 
-print(t)
+j.jogo.tabuleiro.montar_posicao_inicial()
+j.atualizar_tabuleiro()
+j.mainloop()    
