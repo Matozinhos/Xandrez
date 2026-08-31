@@ -1,3 +1,5 @@
+import classes.Tabuleiro 
+
 class Peca: # SuperClass
     def __init__(self, cor : str, linha : str, coluna : str):
         self.cor = cor
@@ -128,37 +130,42 @@ class Rei(Peca):
             (-1, -1), (-1, 1), (1, -1), (1, 1),
         ]
 
-    def movimentos_validos(self, tabuleiro) -> list[tuple[int,int]]:
+    def movimentos_validos(self, tabuleiro : classes.Tabuleiro.Tabuleiro) -> list[tuple[int,int]]:
+        print("movimentos validos rei")
 
         movimentos_impossiveis = []
         for delta_linha, delta_coluna in self.__direcoes:
-            linha, coluna = self._linha, self._coluna
+            print((delta_linha, delta_coluna))
+            linha, coluna = self._linha + delta_linha, self._coluna + delta_coluna
             
-            while tabuleiro.dentro_dos_limite(linha,coluna):
+            while tabuleiro.dentro_dos_limite(linha,coluna): 
                 peca_alvo = tabuleiro.get_peca(linha, coluna)
                 
-                if peca_alvo is None:
-                    break
-                if peca_alvo.cor == self.cor:
-                    break
+                if peca_alvo is not None and peca_alvo.cor != self.cor:
+                    print(type(peca_alvo))
+                    if (delta_linha, delta_coluna) in [(-1, 0), (1, 0), (0, -1), (0, 1)] :
+                        print(type(peca_alvo))
+                        if isinstance(peca_alvo, (Torre, Rainha)):
+                            movimentos_impossiveis.append((linha, coluna))
+                            print("Peca atacando uma casa")
+                    else:
+                        if isinstance(peca_alvo, (Bispo, Rainha)):
+                            movimentos_impossiveis.append((linha,coluna))
+                            print("Peca atacando uma casa")
 
-                if (delta_linha, delta_coluna) in [(-1, 0), (1, 0), (0, -1), (0, 1)] :
-                    if isinstance(peca_alvo, (Torre, Rainha)):
-                        movimentos_impossiveis.append((linha, coluna))
-                else:
-                    if isinstance(peca_alvo, (Bispo, Rainha)):
-                        movimentos_impossiveis.append((linha,coluna))
+                linha += delta_linha
+                coluna += delta_coluna
 
+
+        print(movimentos_impossiveis)
         movimentos = []
-        casas_atacadas = tabuleiro.get_casas_atacadas(linha,coluna) 
         for delta_linha, delta_coluna in self.__direcoes:
-            atacada = False 
             linha, coluna = self._linha + delta_linha, self._coluna + delta_coluna
 
             if not tabuleiro.dentro_dos_limite(linha, coluna) or (linha,coluna) in movimentos_impossiveis:
                 continue
 
-            if (linha, coluna) in casas_atacadas:
+            if (linha, coluna) in movimentos_impossiveis:
                 continue
 
             peca_alvo = tabuleiro.get_peca(linha, coluna)

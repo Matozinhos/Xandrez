@@ -32,6 +32,7 @@ class Jogo:
         if peca_capturar is not None:
             self.jogador_da_vez().registrar_captura(peca_capturar)
             self.historico_de_jogadas.append((peca, linha_destino, coluna_destino, True))
+            self.trocar_turno()
             return True
         self.historico_de_jogadas.append((peca, linha_destino, coluna_destino, False))
         self.trocar_turno()

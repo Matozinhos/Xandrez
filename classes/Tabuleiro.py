@@ -1,7 +1,7 @@
 from classes.Pecas import *
 from classes.Casa import Casa
 
-class Tabuleiro:
+class Tabuleiro: 
     def __init__(self):
         self.TAMANHO = 8
         self.matrizTabuleiro = [[Casa(linha, coluna) for coluna in range(self.TAMANHO)] for linha in range(self.TAMANHO)]
@@ -24,16 +24,6 @@ class Tabuleiro:
         print("Colocou Peca")
         peca.posicao_def(linha, coluna)
         self.matrizTabuleiro[linha][coluna].peca = peca
-
-    def get_casas_atacadas(self, linha :int, coluna :int) -> list[tuple[int,int]]:
-        casas_atacadas = []
-        for linha in range(self.TAMANHO):
-            for coluna in range(self.TAMANHO):
-                casa = self.matrizTabuleiro[linha][coluna]
-                if not casa.is_vazia() or not isinstance(self.get_peca(linha, coluna), Rei):
-                    peca = casa.peca
-                    casas_atacadas.append(peca.movimentos_validos(self))
-        return casas_atacadas
 
     def mover_peca(self, linha0, coluna0, linhaF, colunaF) -> bool:
         peca = self.get_peca(linha0, coluna0)
